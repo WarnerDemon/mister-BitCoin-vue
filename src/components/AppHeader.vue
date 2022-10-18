@@ -1,6 +1,6 @@
 <template>
   <header class="app-header">
-    <h1>Cars</h1>
+    <h1>BitCoin</h1>
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/contact">Contacts</RouterLink>
@@ -20,11 +20,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   background-color: #18181a;
   height: 5vh;
   padding-inline: 10px;
+  margin-block-end: 2em;
 
-  margin-block-end: 5em;
+  nav {
+    &>* {
+      margin-inline-end: 20px;
+    }
+  }
 }
 </style>

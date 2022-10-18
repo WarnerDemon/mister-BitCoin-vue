@@ -1,15 +1,18 @@
 <template>
   <main class="statistics">
-    <h1>Hello from Statistics</h1>
+    <LineChart />
   </main>
 </template>
 
 <script>
+import LineChart from '../components/chart/LineChart.vue';
 export default {
-
+    components: { LineChart }
 }
 </script>
 
 <style>
-
+.statistics {
+  background-color: #fff;
+}
 </style>

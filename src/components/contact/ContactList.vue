@@ -1,8 +1,8 @@
 <template>
   <section class="contact-list">
-    <RouterLink v-for="contact in contacts" :key="contact._id" :to="`contact/${contact._id}`">
-      <ContactPreview :contact="contact" />
-    </RouterLink>
+    <div @click="$router.push(`contact/${contact._id}`)" v-for="contact in contacts" :key="contact._id">
+      <ContactPreview @remove-contact="$emit('remove-contact', contact._id)" :contact="contact" />
+    </div>
   </section>
 </template>
 
@@ -15,10 +15,16 @@ export default {
       required: true,
     }
   },
+  methods: {
+  },
   components: { ContactPreview }
 }
 </script>
 
-<style>
-
+<style lang="scss">
+.contact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
 </style>

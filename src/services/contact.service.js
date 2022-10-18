@@ -1,3 +1,4 @@
+import { storageService } from "./async-storage.service";
 
 export const contactService = {
   getContacts,
@@ -124,28 +125,19 @@ const contacts = [
     "phone": "+1 (842) 587-3812"
   }
 ];
+const STORAGE_KEY = 'contactDB'
 
-function sort(arr) {
-  return arr.sort((a, b) => {
-    if (a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
-      return -1;
-    }
-    if (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase()) {
-      return 1;
-    }
 
-    return 0;
-  })
-}
-
-function getContacts(filterBy = null) {
-  return new Promise((resolve, reject) => {
-    var contactsToReturn = contacts;
-    if (filterBy && filterBy.term) {
-      contactsToReturn = filter(filterBy.term)
-    }
-    resolve(sort(contactsToReturn))
-  })
+async function getContacts(filterBy = null) {
+  let contactsToReturn = await storageService.query(STORAGE_KEY)
+  if (!contactsToReturn || contactsToReturn.length === 0) {
+    storageService.postMany(STORAGE_KEY, contacts)
+    contactsToReturn = contacts
+  }
+  if (filterBy && filterBy.term) {
+    contactsToReturn = _filter(filterBy.term)
+  }
+  return _sort(contactsToReturn)
 }
 
 function getContactById(id) {
@@ -156,14 +148,27 @@ function getContactById(id) {
 }
 
 function deleteContact(id) {
-  return new Promise((resolve, reject) => {
-    const index = contacts.findIndex(contact => contact._id === id)
-    if (index !== -1) {
-      contacts.splice(index, 1)
-    }
+  // return new Promise((resolve, reject) => {
+  //   const index = contacts.findIndex(contact => contact._id === id)
+  //   if (index !== -1) {
+  //     contacts.splice(index, 1)
+  //   }
 
-    resolve(contacts)
-  })
+  //   resolve(contacts)
+  // })
+  return storageService.remove(STORAGE_KEY, id)
+}
+
+function saveContact(contact) {
+  return contact._id ? _updateContact(contact) : _addContact(contact)
+}
+
+function getEmptyContact() {
+  return {
+    name: '',
+    email: '',
+    phone: ''
+  }
 }
 
 function _updateContact(contact) {
@@ -184,19 +189,7 @@ function _addContact(contact) {
   })
 }
 
-function saveContact(contact) {
-  return contact._id ? _updateContact(contact) : _addContact(contact)
-}
-
-function getEmptyContact() {
-  return {
-    name: '',
-    email: '',
-    phone: ''
-  }
-}
-
-function filter(term) {
+function _filter(term) {
   term = term.toLocaleLowerCase()
   return contacts.filter(contact => {
     return contact.name.toLocaleLowerCase().includes(term) ||
@@ -205,6 +198,18 @@ function filter(term) {
   })
 }
 
+function _sort(arr) {
+  return arr.sort((a, b) => {
+    if (a.name.toLocaleLowerCase() < b.name.toLocaleLowerCase()) {
+      return -1;
+    }
+    if (a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase()) {
+      return 1;
+    }
+
+    return 0;
+  })
+}
 
 
 function _makeId(length = 10) {
