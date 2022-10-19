@@ -140,11 +140,13 @@ async function getContacts(filterBy = null) {
   return _sort(contactsToReturn)
 }
 
-function getContactById(id) {
-  return new Promise((resolve, reject) => {
-    const contact = contacts.find(contact => contact._id === id)
-    contact ? resolve(contact) : reject(`Contact id ${id} not found!`)
-  })
+async function getContactById(id) {
+  // return new Promise((resolve, reject) => {
+  //   const contact = contacts.find(contact => contact._id === id)
+  //   contact ? resolve(contact) : reject(`Contact id ${id} not found!`)
+  // })
+  const contact = await storageService.get(STORAGE_KEY, id)
+  return contact
 }
 
 function deleteContact(id) {

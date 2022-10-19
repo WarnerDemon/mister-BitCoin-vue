@@ -8,19 +8,18 @@
 </template>
 
 <script>
-import { bitcoinService } from '../services/bitcoin.service';
-import { userService } from '../services/user.service';
-
 export default {
   data() {
     return {
-      user: null,
-      bitcoinRate: null,
     }
   },
   async created() {
-    this.user = userService.getUser()
-    this.bitcoinRate = await bitcoinService.getRate('USD')
+    this.$store.dispatch({ type: 'loadUser' })
+    this.$store.dispatch({ type: 'loadBitcoinRate' })
+  },
+  computed: {
+    user() { return this.$store.getters.user },
+    bitcoinRate() { return this.$store.getters.bitcoinRate },
   }
 }
 </script>

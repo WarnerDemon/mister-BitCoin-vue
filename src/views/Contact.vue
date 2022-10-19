@@ -5,26 +5,23 @@
 </template>
 
 <script>
-import { contactService } from '../services/contact.service';
 import ContactList from '../components/contact/ContactList.vue';
 
 export default {
   data() {
     return {
-      contacts: null
     };
   },
   async created() {
-    this.contacts = await contactService.getContacts();
+    this.$store.dispatch({ type: 'loadContacts' })
   },
   methods: {
     onRemoveContact(contactId) {
-      console.log('contactId:', contactId)
-      contactService.deleteContact(contactId)
-
-      const contactIdx = this.contacts.findIndex(contact => contact._id === contactId)
-      this.contacts.splice(contactIdx, 1)
+      this.$store.dispatch({ type: 'removeContact', contactId })
     },
+  },
+  computed: {
+    contacts() { return this.$store.getters.contacts }
   },
   components: { ContactList }
 }
