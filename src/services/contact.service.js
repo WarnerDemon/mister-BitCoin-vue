@@ -161,16 +161,19 @@ function deleteContact(id) {
   return storageService.remove(STORAGE_KEY, id)
 }
 
-function saveContact(contact) {
-  return contact._id ? _updateContact(contact) : _addContact(contact)
+async function saveContact(contact) {
+  // return contact._id ? _updateContact(contact) : _addContact(contact)
+  return contact._id ?
+    storageService.put(STORAGE_KEY, contact)
+    : storageService.post(STORAGE_KEY, contact)
 }
 
 function getEmptyContact() {
-  return {
+  return Promise.resolve({
     name: '',
     email: '',
     phone: ''
-  }
+  })
 }
 
 function _updateContact(contact) {
