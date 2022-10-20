@@ -1,6 +1,6 @@
 <template>
   <main v-if="user">
-    <h1>{{user.name}}, Nice to see you again.</h1>
+    <h1>Hi, {{user.name}}, Nice to see you again.</h1>
     <h3>Balance: {{user.balance}}$</h3>
     <h3 v-if="bitcoinRate">BTC: {{bitcoinRate}}$</h3>
   </main>
