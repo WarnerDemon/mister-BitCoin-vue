@@ -14,10 +14,6 @@
 <script>
 
 export default {
-  data() {
-    return {
-    }
-  },
   async created() {
     const contactId = this.$route.params._id
     this.$store.dispatch({ type: 'loadContact', contactId })
