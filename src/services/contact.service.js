@@ -1,11 +1,13 @@
 import { storageService } from "./async-storage.service";
+import { utilService } from "./util.service";
 
 export const contactService = {
   getContacts,
   getContactById,
   deleteContact,
   saveContact,
-  getEmptyContact
+  getEmptyContact,
+  // transferFunds,
 }
 
 const contacts = [
@@ -124,7 +126,7 @@ const contacts = [
     "email": "lillyconner@renovize.com",
     "phone": "+1 (842) 587-3812"
   }
-];
+]
 const STORAGE_KEY = 'contactDB'
 
 
@@ -141,28 +143,22 @@ async function getContacts(filterBy = null) {
 }
 
 async function getContactById(id) {
-  // return new Promise((resolve, reject) => {
-  //   const contact = contacts.find(contact => contact._id === id)
-  //   contact ? resolve(contact) : reject(`Contact id ${id} not found!`)
-  // })
   const contact = await storageService.get(STORAGE_KEY, id)
   return contact
 }
 
 function deleteContact(id) {
-  // return new Promise((resolve, reject) => {
-  //   const index = contacts.findIndex(contact => contact._id === id)
-  //   if (index !== -1) {
-  //     contacts.splice(index, 1)
-  //   }
-
-  //   resolve(contacts)
-  // })
   return storageService.remove(STORAGE_KEY, id)
 }
 
+// async function transferFunds(toContactId, amount) {
+//   const contact = await storageService.get(STORAGE_KEY, id)
+//   const transaction = utilService.getTransactionTemplate(toContactId, amount)
+//   contact.transactions.push(transaction)
+//   return storageService.put(STORAGE_KEY, contact)
+// }
+
 async function saveContact(contact) {
-  // return contact._id ? _updateContact(contact) : _addContact(contact)
   return contact._id ?
     storageService.put(STORAGE_KEY, contact)
     : storageService.post(STORAGE_KEY, contact)

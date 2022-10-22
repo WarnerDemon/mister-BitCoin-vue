@@ -1,6 +1,6 @@
 import axios from "axios"
 export const utilService = {
-  getApi
+  getApi,
 }
 
 function getApi(api) {

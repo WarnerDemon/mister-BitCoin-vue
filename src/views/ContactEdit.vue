@@ -1,8 +1,8 @@
 <template>
   <main class="contact-details" v-if="contact">
-    <button class="go-back">
-      <RouterLink to="/contact">Back</RouterLink>
-    </button>
+    <RouterLink to="/contact">
+      <button class="go-back">Back</button>
+    </RouterLink>
     <img :src="`https://robohash.org/${contact._id}`" alt="User profile">
     <input class="name" v-model="contact.name" type="text">
     <input class="email" v-model="contact.email" type="email">
@@ -46,7 +46,7 @@ export default {
 .contact-details {
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 400px;
   margin: 0 auto;
   gap: 10px;
 
